@@ -1,0 +1,276 @@
+body {
+  margin: 0px;
+  font-family: sans-serif;
+}
+
+/*  Header  */
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.headerUpper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 160px;
+  display: flex;
+  padding: 20px 100px;
+  display: flex;
+}
+
+.headerText {
+  font-size: 80px;
+  font-weight: 1000;
+}
+
+.purpleSpan1 {
+  color: #8e35dc;
+}
+
+.purpleSpan2 {
+  color: #aa51a5;
+}
+
+.loginBtn {
+  font-size: 35px;
+  font-weight: 900;
+  padding: 8px 20px;
+  border: rgb(243, 243, 243) 4px solid;
+  border-radius: 15px;
+  color: white;
+  background: linear-gradient(90deg, rgb(247, 132, 0), orange);
+}
+
+.headerLower {
+  height: 12px;
+  background: linear-gradient(90deg, #8e35dc, orange);
+}
+/*  Header End */
+
+/* Current page content */
+.currentPageContent {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  height: 200vh;
+}
+
+/* Current page content End */
+
+/* sidebar */
+.sidebar {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  border-radius: 19px;
+  width: 270px;
+  height: 620px;
+  background-color: white;
+  margin-top: 120px;
+  margin-left: 20px;
+  position: sticky;
+  top: 100px;
+  box-shadow: 0px 0px 15px rgba(128, 128, 128, 0.368);
+}
+
+.sidebarBtnCon {
+  display: grid;
+  grid-template-columns: 40px 5fr 1fr;
+  align-items: center;
+  justify-content: flex-start;
+  width: 240px;
+  height: 50px;
+  gap: 15px;
+}
+
+.sidebarBtn {
+  font-size: 40px;
+  font-weight: 400;
+  color: #aa51a5;
+  background-color: white;
+  border: none;
+  text-align: start;
+}
+
+.projectBtnCon {
+  display: grid;
+  align-items: center;
+  grid-template-rows: 50px auto;
+  row-gap: 8px;
+  grid-template-areas:
+    ". . ."
+    "DropdownBox DropdownBox DropdownBox";
+}
+
+.projectDropDownBtn {
+  font-size: 40px;
+  color: #aa51a5;
+}
+
+.sidebarIcon {
+  height: 40px;
+  width: auto;
+}
+
+.projectDropDownCon {
+  grid-area: DropdownBox;
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  row-gap: 12px;
+  grid-auto-rows: 30px;
+  justify-content: flex-end;
+}
+
+.projectDropDownText {
+  display: flex;
+  height: 30px;
+  font-size: 30px;
+  color: #aa51a5;
+  background-color: white;
+  border: none;
+}
+
+.sidebarDot {
+  font-size: 30px;
+  color: #aa51a5;
+  text-align: end;
+  padding-right: 12px;
+}
+/* sidebar End */
+
+/* Project page*/
+
+.ProjectContentEl {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 50px;
+  padding-top: 125px;
+  gap: 50px;
+}
+
+/* Project page End*/
+
+/* specifik project page*/
+
+/* specifik project page End */
+
+/*  Other styling that dosen't fall under that catagori */
+
+/* Project Element */
+.specificProjectContentEl {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 50px;
+  padding-top: 125px;
+}
+
+.projectHeaderCon {
+  height: 200px;
+  background: linear-gradient(90deg, #aa51a5, orange);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.226);
+  border-radius: 15px;
+  width: auto;
+}
+.projectHeader {
+  background-color: white;
+  height: 140px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 50px;
+  padding-right: 25px;
+}
+
+.addProjectBtn {
+  background: #efefefff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 140px;
+}
+
+.projectAddBtnIcon {
+  background: url(./img/Icons/addBtn.png);
+  height: 100px;
+  width: 110px;
+}
+
+.newProjectElLeft {
+  width: max(450px, 50%);
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "header header"
+    ". description";
+}
+
+.projectHeaderText {
+  font-size: 50px;
+  font-weight: 900;
+  color: #aa51a5;
+  grid-area: header;
+}
+
+.newProjectElDisciption {
+  grid-area: description;
+  font-size: 22px;
+  color: #aa51a5;
+}
+
+.newProjectElRight {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 60px;
+}
+
+.projectElRightBtnCon {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteProjectBtn {
+  background: url(./img/Icons/trashcanIcon.png);
+  height: 35px;
+  width: 28px;
+  margin-left: 5px;
+}
+
+.editProjectBtn {
+  background: url(./img/Icons/editIcon.png);
+  height: 28px;
+  width: 30px;
+}
+
+.projectTaskIcon {
+  background: url(./img/Icons/taskIconOrange.png);
+  width: 33px;
+  height: 30px;
+}
+
+.projectTaskNumText {
+  font-size: 30px;
+  font-weight: 900;
+  color: orange;
+  margin-right: 30px;
+}
+
+.smallProjectElBtn {
+  border: none;
+  border-radius: 0px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Project Element END */
+
+/*  Other styling that dosen't fall under that catagori END */ ;
