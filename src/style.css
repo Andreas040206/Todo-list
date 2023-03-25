@@ -163,6 +163,7 @@ body {
 .specificProjectContentEl {
   display: flex;
   flex-direction: column;
+  gap: 50px;
   padding: 0px 50px;
   padding-top: 125px;
 }
@@ -263,6 +264,86 @@ body {
   margin-right: 30px;
 }
 
+/* Project Element END */
+
+/* Task Element */
+
+.taskCon {
+  height: 130px;
+  background: linear-gradient(90deg, #aa51a5, orange);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.226);
+  border-radius: 15px;
+  width: auto;
+  transition: 0.7s;
+}
+
+.taskEl {
+  background-color: white;
+  height: 115px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: grid;
+  grid-template-columns: 1fr 600px;
+  overflow: hidden;
+  transition: 0.7s;
+}
+
+.taskAddBtn {
+  height: 120px;
+}
+
+.taskAddBtnIcon {
+  height: 80px;
+  width: 80px;
+}
+
+.taskElSideCon {
+  display: grid;
+  grid-template-rows: 115px 1fr;
+}
+
+.taskHeaderEl {
+  font-size: 45px;
+  font-weight: 900;
+  padding-left: 50px;
+  color: #aa51a5;
+  display: flex;
+  align-items: center;
+  height: 115px;
+  gap: 15px;
+}
+
+.extendBtn {
+  background: url(./img/Icons/extendBtnIcon.png);
+  height: 25px;
+  width: 25px;
+}
+
+.taskDescriptionText {
+  font-size: 20px;
+  padding-top: 20px;
+  padding-left: 50px;
+  color: #aa51a5;
+}
+
+.rightSideUpper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+}
+
+.priorityBox {
+  height: 45px;
+}
+
+.rightSideLower {
+}
+
+/* Task Element End */
+
 .smallProjectElBtn {
   border: none;
   border-radius: 0px;
@@ -270,7 +351,5 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
-/* Project Element END */
 
 /*  Other styling that dosen't fall under that catagori END */ ;

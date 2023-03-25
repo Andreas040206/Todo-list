@@ -3,7 +3,9 @@ import homeIcon from "./img/Icons/homeIcon.png";
 import taskIcon from "./img/Icons/taskIcon.png";
 import projectIcon from "./img/Icons/projectIcon.png";
 import { projectArray } from "./ObjectCreator.js";
-import addBtnIcon from "./img/Icons/addBtn.png";
+import priorityHighIcon from "./img/Icons/priorityHighIcon.png";
+import priorityLowIcon from "./img/Icons/priorityLowIcon.png";
+import priorityMediumIcon from "./img/Icons/priorityMediumIcon.png";
 
 const loader = function () {
   while (document.body.firstChild) {
@@ -193,8 +195,9 @@ const specificProjectPage = function () {
   let specificProjectContent = document.createElement("div");
   specificProjectContent.classList.add("specificProjectContentEl");
 
-  specificProjectContent.appendChild(
-    createAndAppendChildren.forCreatingProjectEl(currentPageChecker)
+  createAndAppendChildren.forSpecificProjectPage(
+    currentPageChecker,
+    specificProjectContent
   );
 
   return specificProjectContent;
@@ -238,6 +241,35 @@ const createAndAppendChildren = {
 
     addBtn.addEventListener("click", function () {
       btnActivation.projectArrayEdits.addProjectBtn();
+    });
+
+    parrent.appendChild(addBtn);
+  },
+  forSpecificProjectPage: function (projectArrayNum, parrent) {
+    parrent.appendChild(this.forCreatingProjectEl(projectArrayNum));
+
+    for (let i = 0; i < projectArray[projectArrayNum].TaskList.length; i++) {
+      parrent.appendChild(
+        createAndAppendChildren.forCreatingTaskEl(
+          projectArray[projectArrayNum].TaskList[i]
+        )
+      );
+    }
+
+    const addBtn = document.createElement("btn");
+    addBtn.classList.add("projectHeaderCon", "addProjectBtn", "taskAddBtn");
+
+    let addBtnIcon = document.createElement("div");
+    addBtnIcon.classList.add(
+      "projectAddBtnIcon",
+      "smallProjectElBtn",
+      "taskAddBtnIcon"
+    );
+
+    addBtn.appendChild(addBtnIcon);
+
+    addBtn.addEventListener("click", function () {
+      btnActivation.projectArrayEdits.taskArrayEdits(projectArrayNum);
     });
 
     parrent.appendChild(addBtn);
@@ -320,6 +352,86 @@ const createAndAppendChildren = {
     newProjectElCon.appendChild(newProjectEl);
 
     return newProjectElCon;
+  },
+  forCreatingTaskEl: function (taskInfoEl) {
+    const taskCon = document.createElement("div");
+    taskCon.classList.add("taskCon");
+
+    const taskEl = document.createElement("div");
+    taskEl.classList.add("taskEl");
+
+    // creating the left side
+    const leftSide = document.createElement("div");
+    leftSide.classList.add("taskElSideCon");
+
+    const titleEl = document.createElement("div");
+    titleEl.classList.add("taskHeaderEl");
+
+    let titleText = document.createElement("div");
+    titleText.textContent = taskInfoEl.name;
+
+    let extendBtn = document.createElement("div");
+    extendBtn.classList.add("smallProjectElBtn", "extendBtn");
+
+    let i = 0;
+    extendBtn.addEventListener("click", function () {
+      i++;
+      if (i % 2 === 1) {
+        taskEl.style.height = "220px";
+        taskCon.style.height = "235px";
+        extendBtn.style.rotate = "180deg";
+      } else {
+        taskEl.style.height = "115px";
+        taskCon.style.height = "130px";
+        extendBtn.style.rotate = "0deg";
+      }
+    });
+
+    titleEl.appendChild(titleText);
+    titleEl.appendChild(extendBtn);
+
+    let descriptionEl = document.createElement("div");
+    descriptionEl.classList.add("taskDescriptionText");
+    descriptionEl.textContent = taskInfoEl.description;
+
+    leftSide.appendChild(titleEl);
+    leftSide.appendChild(descriptionEl);
+
+    // creating the right side
+    const rightSide = document.createElement("div");
+    rightSide.classList.add("taskElSideCon");
+
+    const rightSideUpper = document.createElement("div");
+    rightSideUpper.classList.add("rightSideUpper");
+
+    let priorityBox = new Image();
+    if (taskInfoEl.priority === "low") {
+      priorityBox.src = priorityLowIcon;
+    } else if (taskInfoEl.priority === "high") {
+      priorityBox.src = priorityHighIcon;
+    } else {
+      priorityBox.src = priorityMediumIcon;
+    }
+    priorityBox.classList.add("priorityBox");
+
+    let daysLeftEl = document.createElement("div");
+    daysLeftEl.classList.add("daysLeftEl");
+
+    rightSideUpper.appendChild(priorityBox);
+    rightSideUpper.appendChild(daysLeftEl);
+
+    const rightSideLower = document.createElement("div");
+    rightSideLower.classList.add("rightSideLower");
+
+    rightSide.appendChild(rightSideUpper);
+    rightSide.appendChild(rightSideLower);
+
+    taskEl.appendChild(leftSide);
+    taskEl.appendChild(rightSide);
+
+    taskCon.appendChild(taskEl);
+
+    return taskCon;
   },
 };
 

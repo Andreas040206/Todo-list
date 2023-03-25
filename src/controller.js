@@ -11,9 +11,8 @@ const getValuesByConsole = {
     let name = prompt("Name please");
     let desciption = prompt("desciption please");
     let deadline = prompt("Deadline please");
-    let priorty = prompt("priority please");
-    let notes = prompt("any notes yet");
-    return { name, desciption, deadline, priorty, notes };
+    let priority = prompt("priority please");
+    return { name, desciption, deadline, priority };
   },
 };
 
@@ -25,8 +24,7 @@ const createObjFromValues = {
       newObj.name,
       newObj.desciption,
       newObj.deadline,
-      newObj.priorty,
-      newObj.notes
+      newObj.priority
     );
     return newTask;
   },
@@ -80,6 +78,11 @@ const btnActivation = {
     addProjectBtn: function () {
       console.log("adding project");
       addProject();
+      loader();
+    },
+    taskArrayEdits: function (btnNum) {
+      console.log(`adding task to ${projectArray[btnNum].name}`);
+      projectArray[btnNum].addTask();
       loader();
     },
   },
