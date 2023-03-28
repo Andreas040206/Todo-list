@@ -182,6 +182,10 @@ body {
 
 /* specifik project page*/
 
+.specificProjectHeader {
+  margin-bottom: 100px;
+}
+
 /* specifik project page End */
 
 /* Form */
@@ -575,4 +579,40 @@ body {
   background-size: cover;
 }
 
+.sortBtn {
+  position: absolute;
+  margin-top: 225px;
+  height: 40px;
+  background-color: #fff;
+  border: solid 3px orange;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.133);
+  width: 160px;
+  align-self: flex-end;
+  transition: 0.5s;
+  display: grid;
+  grid-template-rows: 40px 40px 40px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.sortByBtn {
+  color: orange;
+  font-size: 30px;
+  font-weight: 700;
+  width: 100%;
+  padding-bottom: 2px;
+}
+
+.sortByBtnNoAr {
+  text-align: center;
+}
+
+.sortByBtnNoAr:hover {
+  background-color: rgb(255, 241, 216);
+}
+
+.selectedSortByBtn {
+  background-color: rgb(255, 241, 216);
+}
 /*  Other styling that dosen't fall under that catagori END */ ;

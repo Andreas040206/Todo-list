@@ -39,6 +39,7 @@ const sortBy = function (projectArrayNum, sortBy) {
   if (sortBy === "deadline") {
     let numbersArray = [];
 
+    console.log(projectArrayNum);
     for (let i = 0; i < projectArray[projectArrayNum].TaskList.length; i++) {
       numbersArray.push(
         calcDaysIntil(projectArray[projectArrayNum].TaskList[i].deadline)
@@ -57,6 +58,8 @@ const sortBy = function (projectArrayNum, sortBy) {
           calcDaysIntil(projectArray[projectArrayNum].TaskList[k].deadline)
         ) {
           sortedArray.push(projectArray[projectArrayNum].TaskList[k]);
+          projectArray[projectArrayNum].TaskList.splice(k, 1);
+          break;
         }
       }
     }
@@ -79,6 +82,7 @@ const sortBy = function (projectArrayNum, sortBy) {
   }
 
   projectArray[projectArrayNum].TaskList = sortedArray;
+  saveToLocalStorage();
 };
 
 let currentPageChecker = "home";
@@ -145,7 +149,7 @@ const btnActivation = {
       projectArray[projectNum].editTask(taskNum, obj);
       loader();
     },
-    sortedByTime(projectArrayNum, sortedBy) {
+    sortedBy(projectArrayNum, sortedBy) {
       sortBy(projectArrayNum, sortedBy);
       loader();
     },
@@ -174,6 +178,8 @@ const calcDaysIntil = function (date) {
 
   return totalTime;
 };
+
+// saves to local storage
 
 const saveToLocalStorage = function () {
   localStorage.setItem("projectArray", JSON.stringify(projectArray));

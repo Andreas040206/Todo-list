@@ -13,6 +13,7 @@ import priorityHighIcon from "./img/Icons/priorityHighIcon.png";
 import priorityLowIcon from "./img/Icons/priorityLowIcon.png";
 import priorityMediumIcon from "./img/Icons/priorityMediumIcon.png";
 import closeIcon from "./img/Icons/closeIcon.png";
+import { sortBy } from "lodash";
 
 const loader = function () {
   while (document.body.firstChild) {
@@ -261,7 +262,11 @@ const createAndAppendChildren = {
     parrent.appendChild(addBtn);
   },
   forSpecificProjectPage: function (projectArrayNum, parrent) {
-    parrent.appendChild(this.forCreatingProjectEl(projectArrayNum));
+    let header = this.forCreatingProjectEl(projectArrayNum);
+    header.classList.add("specificProjectHeader");
+    parrent.appendChild(header);
+
+    parrent.appendChild(createAndAppendChildren.sortBtn(projectArrayNum));
 
     for (let i = 0; i < projectArray[projectArrayNum].TaskList.length; i++) {
       parrent.appendChild(
@@ -506,6 +511,52 @@ const createAndAppendChildren = {
     taskCon.appendChild(taskEl);
 
     return taskCon;
+  },
+  sortBtn: function (projectArrayNum) {
+    const sortBtn = document.createElement("div");
+    sortBtn.classList.add("sortBtn");
+
+    let upDown = 0;
+
+    let sortByBtn = document.createElement("div");
+    sortByBtn.classList.add("sortByBtn");
+    sortByBtn.textContent = "▲ Sort by";
+    sortByBtn.style.paddingLeft = "8px";
+
+    sortByBtn.addEventListener("click", function () {
+      if (upDown % 2 === 0) {
+        sortBtn.style.height = "120px";
+        sortByBtn.textContent = "▼ Sort by";
+      } else {
+        sortBtn.style.height = "40px";
+        sortByBtn.textContent = "▲ Sort by";
+      }
+      upDown++;
+    });
+
+    let sortNumBtn = document.createElement("div");
+    sortNumBtn.classList.add("sortByBtn", "sortByBtnNoAr");
+    sortNumBtn.textContent = "Date";
+    sortNumBtn.addEventListener("click", function () {
+      btnActivation.projectArrayEdits.sortedBy(projectArrayNum, "deadline");
+      sortNumBtn.classList.add("selectedSortByBtn");
+      sortPriorityBtn.classList.remove("selectedSortByBtn");
+    });
+
+    let sortPriorityBtn = document.createElement("div");
+    sortPriorityBtn.classList.add("sortByBtn", "sortByBtnNoAr");
+    sortPriorityBtn.textContent = "Priority";
+    sortPriorityBtn.addEventListener("click", function () {
+      btnActivation.projectArrayEdits.sortedBy(projectArrayNum, "");
+      sortPriorityBtn.classList.add("selectedSortByBtn");
+      sortNumBtn.classList.remove("selectedSortByBtn");
+    });
+
+    sortBtn.appendChild(sortByBtn);
+    sortBtn.appendChild(sortNumBtn);
+    sortBtn.appendChild(sortPriorityBtn);
+
+    return sortBtn;
   },
 };
 
