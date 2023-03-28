@@ -168,6 +168,41 @@ body {
 }
 /* sidebar End */
 
+/* Homepage */
+
+.homePageContent {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.largerIcon {
+  height: 300px;
+  margin-bottom: 50px;
+}
+
+.homepageSorryText {
+  font-size: 50px;
+  font-weight: 700;
+  color: #aa51a5;
+}
+
+/* Homepage End*/
+
+/* Task page */
+
+.tasksPageContent {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Task page End */
+
 /* Project page*/
 
 .ProjectContentEl {

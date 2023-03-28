@@ -162,13 +162,6 @@ const createSideBar = function () {
   return sidebar;
 };
 
-const currentPageContentContentLoader = function () {
-  while (currentPageContentContent.firstChild) {
-    currentPageContentContent.removeChild(currentPageContentContent.firstChild);
-  }
-  document.body.appendChild(createFinalPageObject());
-};
-
 const createCurrentPageContentContent = function () {
   const currentPageContent = document.createElement("div");
   currentPageContent.classList.add("currentPageContentContent");
@@ -187,15 +180,39 @@ const createCurrentPageContentContent = function () {
 };
 
 const homePage = function () {
-  let homePageContent = document.createElement("div");
+  const homePageContent = document.createElement("div");
+  homePageContent.classList.add("homePageContent");
+
+  let homeIconImg = new Image();
+  homeIconImg.src = homeIcon;
+  homeIconImg.classList.add("largerIcon");
+
+  let homepageSorryText = document.createElement("span");
+  homepageSorryText.classList.add("homepageSorryText");
+  homepageSorryText.textContent = "... Sorry nothing here";
+
+  homePageContent.appendChild(homeIconImg);
+  homePageContent.appendChild(homepageSorryText);
 
   return homePageContent;
 };
 
 const tasksPage = function () {
-  let tasksContent = document.createElement("div");
+  const tasksPageContent = document.createElement("div");
+  tasksPageContent.classList.add("tasksPageContent");
 
-  return tasksContent;
+  let taskIconImg = new Image();
+  taskIconImg.src = taskIcon;
+  taskIconImg.classList.add("largerIcon");
+
+  let homepageSorryText = document.createElement("span");
+  homepageSorryText.classList.add("homepageSorryText");
+  homepageSorryText.textContent = "... Sorry nothing here";
+
+  tasksPageContent.appendChild(taskIconImg);
+  tasksPageContent.appendChild(homepageSorryText);
+
+  return tasksPageContent;
 };
 
 const projectsPage = function () {
