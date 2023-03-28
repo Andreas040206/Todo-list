@@ -1,4 +1,10 @@
-import { btnActivation, currentPageChecker } from "./controller";
+import {
+  btnActivation,
+  currentPageChecker,
+  createProject,
+  editProject,
+  calcDaysIntil,
+} from "./controller";
 import homeIcon from "./img/Icons/homeIcon.png";
 import taskIcon from "./img/Icons/taskIcon.png";
 import projectIcon from "./img/Icons/projectIcon.png";
@@ -6,6 +12,7 @@ import { projectArray } from "./ObjectCreator.js";
 import priorityHighIcon from "./img/Icons/priorityHighIcon.png";
 import priorityLowIcon from "./img/Icons/priorityLowIcon.png";
 import priorityMediumIcon from "./img/Icons/priorityMediumIcon.png";
+import closeIcon from "./img/Icons/closeIcon.png";
 
 const loader = function () {
   while (document.body.firstChild) {
@@ -15,7 +22,7 @@ const loader = function () {
 };
 
 const createFinalPageObject = function () {
-  let pageContent = document.createElement("div");
+  const pageContent = document.createElement("div");
   pageContent.classList.add("pageContent");
 
   pageContent.appendChild(createHeader());
@@ -55,11 +62,19 @@ const createHeader = function () {
   headerText.appendChild(spanPurple2);
   headerText.appendChild(spanBlack2);
 
+  headerText.addEventListener("click", function () {
+    btnActivation.localStorage.load();
+  });
+
   headerUpper.appendChild(headerText);
 
   let loginBtn = document.createElement("button");
   loginBtn.classList.add("loginBtn");
   loginBtn.textContent = "Sign in";
+
+  loginBtn.addEventListener("click", function () {
+    btnActivation.localStorage.save();
+  });
 
   headerUpper.appendChild(loginBtn);
 
@@ -125,7 +140,7 @@ const createSideBar = function () {
 
   let projectIconImg = new Image();
   projectIconImg.src = projectIcon;
-  projectIconImg.classList.add("sidebarIcon");
+  projectIconImg.classList.add("sidebarIcon", "projectIcon");
 
   let projectBtn = document.createElement("button");
   projectBtn.classList.add("projectBtn", "sidebarBtn");
@@ -207,21 +222,21 @@ const createAndAppendChildren = {
   forSidebarProjectlist: function (Array, parrent) {
     let el = document.createElement("div");
     el.classList.add("projectDropDownCon");
-    for (let i = 0; i < Array.length; i++) {
-      let dotEl = document.createElement("div");
-      dotEl.classList.add("sidebarDot");
-      dotEl.textContent = "-";
 
+    let projectBtnUnderline = document.createElement("div");
+    projectBtnUnderline.classList.add("projectBtnUnderline");
+
+    el.appendChild(projectBtnUnderline);
+    for (let i = 0; i < Array.length; i++) {
       let newProjectBtn = document.createElement("button");
       newProjectBtn.classList.add("projectDropDownText");
-      newProjectBtn.textContent = Array[i].name;
+      newProjectBtn.textContent = `‣ ${Array[i].name}`;
 
       newProjectBtn.addEventListener("click", function () {
         let btnNum = i;
         btnActivation.pageDirections.specificProjectBtnActivated(btnNum);
       });
 
-      el.appendChild(dotEl);
       el.appendChild(newProjectBtn);
     }
     parrent.appendChild(el);
@@ -250,9 +265,7 @@ const createAndAppendChildren = {
 
     for (let i = 0; i < projectArray[projectArrayNum].TaskList.length; i++) {
       parrent.appendChild(
-        createAndAppendChildren.forCreatingTaskEl(
-          projectArray[projectArrayNum].TaskList[i]
-        )
+        createAndAppendChildren.forCreatingTaskEl(projectArrayNum, i)
       );
     }
 
@@ -269,7 +282,7 @@ const createAndAppendChildren = {
     addBtn.appendChild(addBtnIcon);
 
     addBtn.addEventListener("click", function () {
-      btnActivation.projectArrayEdits.taskArrayEdits(projectArrayNum);
+      btnActivation.projectArrayEdits.taskArrayAdd(projectArrayNum);
     });
 
     parrent.appendChild(addBtn);
@@ -353,7 +366,7 @@ const createAndAppendChildren = {
 
     return newProjectElCon;
   },
-  forCreatingTaskEl: function (taskInfoEl) {
+  forCreatingTaskEl: function (projectArrayNum, taskInfoEl) {
     const taskCon = document.createElement("div");
     taskCon.classList.add("taskCon");
 
@@ -368,7 +381,8 @@ const createAndAppendChildren = {
     titleEl.classList.add("taskHeaderEl");
 
     let titleText = document.createElement("div");
-    titleText.textContent = taskInfoEl.name;
+    titleText.textContent =
+      projectArray[projectArrayNum].TaskList[taskInfoEl].name;
 
     let extendBtn = document.createElement("div");
     extendBtn.classList.add("smallProjectElBtn", "extendBtn");
@@ -392,7 +406,8 @@ const createAndAppendChildren = {
 
     let descriptionEl = document.createElement("div");
     descriptionEl.classList.add("taskDescriptionText");
-    descriptionEl.textContent = taskInfoEl.description;
+    descriptionEl.textContent =
+      projectArray[projectArrayNum].TaskList[taskInfoEl].description;
 
     leftSide.appendChild(titleEl);
     leftSide.appendChild(descriptionEl);
@@ -405,9 +420,11 @@ const createAndAppendChildren = {
     rightSideUpper.classList.add("rightSideUpper");
 
     let priorityBox = new Image();
-    if (taskInfoEl.priority === "low") {
+    if (projectArray[projectArrayNum].TaskList[taskInfoEl].priority === "low") {
       priorityBox.src = priorityLowIcon;
-    } else if (taskInfoEl.priority === "high") {
+    } else if (
+      projectArray[projectArrayNum].TaskList[taskInfoEl].priority === "high"
+    ) {
       priorityBox.src = priorityHighIcon;
     } else {
       priorityBox.src = priorityMediumIcon;
@@ -416,15 +433,72 @@ const createAndAppendChildren = {
 
     let daysLeftEl = document.createElement("div");
     daysLeftEl.classList.add("daysLeftEl");
+    let daysLeft = calcDaysIntil(
+      projectArray[projectArrayNum].TaskList[taskInfoEl].deadline
+    );
+
+    if (daysLeft < 0) {
+      daysLeftEl.style.color = "red";
+      daysLeftEl.textContent = `${daysLeft * -1} Days ago!`;
+    } else if (daysLeft === 0) {
+      daysLeftEl.style.color = "red";
+      daysLeftEl.textContent = `Today!`;
+    } else if (daysLeft === 1) {
+      daysLeftEl.style.color = "red";
+      daysLeftEl.textContent = `Tomorrow`;
+    } else if (daysLeft < 10) {
+      daysLeftEl.style.color = "red";
+      daysLeftEl.textContent = `${daysLeft} Days`;
+    } else if (daysLeft <= 30) {
+      daysLeftEl.textContent = `${daysLeft} Days`;
+    } else if (daysLeft < 60) {
+      daysLeftEl.textContent = `1 Month`;
+    } else if (daysLeft < 365) {
+      daysLeftEl.textContent = `${Math.floor(daysLeft / 30)} Months`;
+    } else if (daysLeft < 730) {
+      daysLeftEl.textContent = `1 Year`;
+    } else if (daysLeft >= 730) {
+      daysLeftEl.textContent = `${Math.floor(daysLeft / 365)} Years`;
+    }
+
+    const editAndDeleteBtnCon = document.createElement("div");
+    editAndDeleteBtnCon.classList.add("editAndDeleteBtnCon");
+
+    let deleteProjectBtn = document.createElement("button");
+    deleteProjectBtn.classList.add("deleteProjectBtn", "smallProjectElBtn");
+    deleteProjectBtn.addEventListener("click", function () {
+      btnActivation.projectArrayEdits.deleteTaskBtn(
+        projectArrayNum,
+        taskInfoEl
+      );
+    });
+
+    let editProjectBtn = document.createElement("button");
+    editProjectBtn.classList.add("editProjectBtn", "smallProjectElBtn");
+    editProjectBtn.addEventListener("click", function () {
+      btnActivation.projectArrayEdits.editTaskBtn(projectArrayNum, taskInfoEl);
+    });
+
+    editAndDeleteBtnCon.appendChild(editProjectBtn);
+    editAndDeleteBtnCon.appendChild(deleteProjectBtn);
 
     rightSideUpper.appendChild(priorityBox);
     rightSideUpper.appendChild(daysLeftEl);
+    rightSideUpper.appendChild(editAndDeleteBtnCon);
 
     const rightSideLower = document.createElement("div");
     rightSideLower.classList.add("rightSideLower");
 
+    let doDate = document.createElement("div");
+    doDate.classList.add("daysLeftEl");
+    doDate.textContent = `Deadline: ${projectArray[projectArrayNum].TaskList[taskInfoEl].deadline}`;
+
+    rightSideLower.appendChild(doDate);
+
     rightSide.appendChild(rightSideUpper);
     rightSide.appendChild(rightSideLower);
+
+    // appending both sides
 
     taskEl.appendChild(leftSide);
     taskEl.appendChild(rightSide);
@@ -435,11 +509,287 @@ const createAndAppendChildren = {
   },
 };
 
-const getValueElByForm = {
-  forProject: function () {
-    return {};
+const getValueByForm = {
+  forProject: function (projectNum) {
+    const formCon = document.createElement("div");
+    formCon.classList.add("formCon");
+
+    let nameInput = document.createElement("input");
+    nameInput.addEventListener("change", function () {
+      nameInput.style.borderColor = "grey";
+    });
+    nameInput.setAttribute("type", "text");
+    nameInput.setAttribute("placeholder", "Project name..");
+    nameInput.classList.add("nameinput");
+
+    let descriptionInput = document.createElement("textarea");
+    descriptionInput.setAttribute("rows", "4");
+    descriptionInput.setAttribute("placeholder", "Project description...");
+    descriptionInput.classList.add("descriptionInput");
+    descriptionInput.addEventListener("change", function () {
+      descriptionInput.style.borderColor = "grey";
+    });
+
+    let createBtn = document.createElement("button");
+    createBtn.setAttribute("metheod", "get");
+    createBtn.classList.add("createBtn");
+    createBtn.textContent = "Create";
+
+    createBtn.addEventListener("click", function () {
+      if (nameInput.value === "") {
+        nameInput.style.borderColor = "red";
+        nameInput.setAttribute("placeholder", "Please fill out");
+        nameInput.classList.add("notFilled");
+      }
+      if (descriptionInput.value === "") {
+        descriptionInput.style.borderColor = "red";
+        descriptionInput.setAttribute("placeholder", "Please fill out");
+        descriptionInput.classList.add("notFilled");
+      }
+      if (descriptionInput.value !== "" && nameInput.value !== "") {
+        let obj = {
+          description: descriptionInput.value,
+          name: nameInput.value,
+        };
+        if (projectNum !== null && projectNum !== undefined) {
+          editProject(obj, projectNum);
+        } else {
+          createProject(obj);
+        }
+      }
+    });
+
+    if (projectNum !== null && projectNum !== undefined) {
+      nameInput.setAttribute("value", projectArray[projectNum].name);
+      descriptionInput.textContent = projectArray[projectNum].description;
+    }
+
+    let closeBtn = new Image();
+    closeBtn.src = closeIcon;
+    closeBtn.classList.add("closeBtn");
+    closeBtn.addEventListener("click", function () {
+      btnActivation.pageDirections.projectBtnActivated();
+    });
+
+    formCon.appendChild(nameInput);
+    formCon.appendChild(descriptionInput);
+    formCon.appendChild(createBtn);
+    formCon.appendChild(closeBtn);
+
+    const blurBg = document.createElement("div");
+    blurBg.classList.add("blurBg");
+
+    blurBg.appendChild(formCon);
+
+    document.body.appendChild(blurBg);
   },
-  forTask: function () {},
+  forTask: function (projectArrayNum, taskNum) {
+    const formCon = document.createElement("div");
+    formCon.classList.add("formCon", "taskFormCon");
+
+    let nameInput = document.createElement("input");
+    nameInput.addEventListener("change", function () {
+      nameInput.style.borderColor = "grey";
+    });
+    nameInput.setAttribute("type", "text");
+    nameInput.setAttribute("placeholder", "Task name...");
+    nameInput.classList.add("nameinput");
+
+    let descriptionInput = document.createElement("textarea");
+    descriptionInput.setAttribute("rows", "4");
+    descriptionInput.setAttribute("placeholder", "Task description...");
+    descriptionInput.classList.add("descriptionInput");
+    descriptionInput.addEventListener("change", function () {
+      descriptionInput.style.borderColor = "grey";
+    });
+
+    const datePickerCon = document.createElement("div");
+    datePickerCon.classList.add("datePickerCon");
+
+    let datePickerLabel = document.createElement("span");
+    datePickerLabel.classList.add("formLabel");
+    datePickerLabel.textContent = "Deadline: ";
+
+    let datePicker = document.createElement("input");
+    datePicker.setAttribute("type", "date");
+    datePicker.classList.add("datePicker");
+    datePicker.addEventListener("change", function () {
+      datePickerLabel.style.color = "grey";
+      datePicker.style.color = "#aa51a5";
+      datePicker.style.borderColor = "grey";
+    });
+
+    datePickerCon.appendChild(datePickerLabel);
+    datePickerCon.appendChild(datePicker);
+
+    const priorityCon = document.createElement("div");
+    priorityCon.classList.add("datePickerCon");
+
+    let priorityLabel = document.createElement("span");
+    priorityLabel.classList.add("formLabel");
+    priorityLabel.textContent = "Priority:";
+
+    const prioritybtnCon = document.createElement("div");
+    prioritybtnCon.classList.add("prioritybtnCon");
+
+    let priorityValue = "";
+
+    let highBtn = document.createElement("div");
+    highBtn.classList.add("highBtn", "priorityBtn");
+    highBtn.textContent = "High";
+
+    highBtn.addEventListener("click", function () {
+      highBtn.classList.remove("highBtn");
+      highBtn.classList.add("highBtnSelected");
+      mediumBtn.classList.remove("mediumBtnSelected");
+      mediumBtn.classList.add("mediumBtn");
+      lowBtn.classList.remove("lowBtnSelected");
+      lowBtn.classList.add("lowBtn");
+
+      priorityValue = "high";
+
+      if (priorityLabel.style.color === "red") {
+        priorityLabel.style.color = "grey";
+      }
+    });
+
+    let mediumBtn = document.createElement("div");
+    mediumBtn.classList.add("mediumBtn", "priorityBtn");
+    mediumBtn.textContent = "Medium";
+
+    mediumBtn.addEventListener("click", function () {
+      highBtn.classList.remove("highBtnSelected");
+      highBtn.classList.add("highBtn");
+      mediumBtn.classList.remove("mediumBtn");
+      mediumBtn.classList.add("mediumBtnSelected");
+      lowBtn.classList.remove("lowBtnSelected");
+      lowBtn.classList.add("lowBtn");
+
+      priorityValue = "medium";
+
+      if (priorityLabel.style.color === "red") {
+        priorityLabel.style.color = "grey";
+      }
+    });
+
+    let lowBtn = document.createElement("div");
+    lowBtn.classList.add("lowBtn", "priorityBtn");
+    lowBtn.textContent = "Low";
+
+    lowBtn.addEventListener("click", function () {
+      highBtn.classList.remove("highBtnSelected");
+      highBtn.classList.add("highBtn");
+      mediumBtn.classList.remove("mediumBtnSelected");
+      mediumBtn.classList.add("mediumBtn");
+      lowBtn.classList.remove("lowBtn");
+      lowBtn.classList.add("lowBtnSelected");
+
+      priorityValue = "low";
+
+      if (priorityLabel.style.color === "red") {
+        priorityLabel.style.color = "grey";
+      }
+    });
+
+    prioritybtnCon.appendChild(highBtn);
+    prioritybtnCon.appendChild(mediumBtn);
+    prioritybtnCon.appendChild(lowBtn);
+
+    priorityCon.appendChild(priorityLabel);
+    priorityCon.appendChild(prioritybtnCon);
+
+    let createBtn = document.createElement("button");
+    createBtn.setAttribute("metheod", "get");
+    createBtn.classList.add("createBtn");
+    createBtn.textContent = "Create";
+
+    createBtn.addEventListener("click", function () {
+      if (nameInput.value === "") {
+        nameInput.style.borderColor = "red";
+        nameInput.setAttribute("placeholder", "Please fill out");
+        nameInput.classList.add("notFilled");
+      }
+      if (descriptionInput.value === "") {
+        descriptionInput.style.borderColor = "red";
+        descriptionInput.setAttribute("placeholder", "Please fill out");
+        descriptionInput.classList.add("notFilled");
+      }
+      if (datePicker.value === "") {
+        datePicker.style.borderColor = "red";
+        datePicker.style.color = "red";
+        datePickerLabel.style.color = "red";
+      }
+      if (priorityValue === "") {
+        priorityLabel.style.color = "red";
+      }
+      if (
+        descriptionInput.value !== "" &&
+        nameInput.value !== "" &&
+        datePicker.value !== "" &&
+        priorityValue !== ""
+      ) {
+        let obj = {
+          description: descriptionInput.value,
+          name: nameInput.value,
+          deadline: datePicker.value,
+          priority: priorityValue,
+        };
+        if (taskNum !== null && taskNum !== undefined) {
+          btnActivation.projectArrayEdits.editTask(
+            projectArrayNum,
+            obj,
+            taskNum
+          );
+        } else {
+          btnActivation.projectArrayEdits.createTask(projectArrayNum, obj);
+        }
+      }
+    });
+
+    if (taskNum !== null && taskNum !== undefined) {
+      if (projectArray[projectArrayNum].TaskList[taskNum].priority === "high") {
+        highBtn.classList.remove("highBtn");
+        highBtn.classList.add("highBtnSelected");
+        priorityValue = "high";
+      } else if (
+        projectArray[projectArrayNum].TaskList[taskNum].priority === "low"
+      ) {
+        lowBtn.classList.remove("lowBtn");
+        lowBtn.classList.add("lowBtnSelected");
+        priorityValue = "low";
+      } else {
+        mediumBtn.classList.remove("mediumBtn");
+        mediumBtn.classList.add("mediumBtnSelected");
+        priorityValue = "medium";
+      }
+      nameInput.value = projectArray[projectArrayNum].TaskList[taskNum].name;
+      descriptionInput.value =
+        projectArray[projectArrayNum].TaskList[taskNum].description;
+      datePicker.value =
+        projectArray[projectArrayNum].TaskList[taskNum].deadline;
+    }
+
+    let closeBtn = new Image();
+    closeBtn.src = closeIcon;
+    closeBtn.classList.add("closeBtn");
+    closeBtn.addEventListener("click", function () {
+      btnActivation.pageDirections.specificProjectBtnActivated(projectArrayNum);
+    });
+
+    formCon.appendChild(nameInput);
+    formCon.appendChild(descriptionInput);
+    formCon.appendChild(datePickerCon);
+    formCon.appendChild(priorityCon);
+    formCon.appendChild(createBtn);
+    formCon.appendChild(closeBtn);
+
+    const blurBg = document.createElement("div");
+    blurBg.classList.add("blurBg");
+
+    blurBg.appendChild(formCon);
+
+    document.body.appendChild(blurBg);
+  },
 };
 
-export { createFinalPageObject, createAndAppendChildren, loader };
+export { createFinalPageObject, loader, getValueByForm };

@@ -1,6 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap");
+
 body {
   margin: 0px;
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
+  user-select: none;
 }
 
 /*  Header  */
@@ -95,11 +98,16 @@ body {
   text-align: start;
 }
 
+.sidebarBtn:hover {
+  color: #828282;
+}
+
 .projectBtnCon {
   display: grid;
+  width: 240px;
   align-items: center;
   grid-template-rows: 50px auto;
-  row-gap: 8px;
+  row-gap: 0px;
   grid-template-areas:
     ". . ."
     "DropdownBox DropdownBox DropdownBox";
@@ -118,19 +126,38 @@ body {
 .projectDropDownCon {
   grid-area: DropdownBox;
   display: grid;
-  grid-template-columns: 1fr 2.5fr;
-  row-gap: 12px;
-  grid-auto-rows: 30px;
-  justify-content: flex-end;
+  grid-template-columns: 1fr;
+  row-gap: 0px;
+  grid-auto-rows: auto;
+  justify-items: flex-start;
+}
+
+.projectIcon {
+  justify-self: center;
 }
 
 .projectDropDownText {
   display: flex;
-  height: 30px;
+  height: 40px;
   font-size: 30px;
+  font-weight: 700;
   color: #aa51a5;
   background-color: white;
   border: none;
+  margin-left: 10px;
+}
+
+.projectDropDownText:hover {
+  color: #828282;
+}
+
+.projectBtnUnderline {
+  width: 90%;
+  border-radius: 4px;
+  height: 4px;
+  background-color: #aa51a5;
+  margin-bottom: 12px;
+  justify-self: flex-start;
 }
 
 .sidebarDot {
@@ -156,6 +183,181 @@ body {
 /* specifik project page*/
 
 /* specifik project page End */
+
+/* Form */
+.blurBg {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.198);
+  height: 100vh;
+  width: 100vw;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.formCon {
+  position: fixed;
+  top: calc(50vh - 350px);
+  height: auto;
+  padding: 100px 50px;
+  width: 500px;
+  background-color: #fff;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.taskFormCon {
+  top: 200px;
+}
+
+.nameinput {
+  margin-top: 20px;
+  height: 80px;
+  border-radius: 30px;
+  border: solid grey 2px;
+  font-size: 50px;
+  font-weight: 700;
+  color: #aa51a5;
+  padding: 0px 25px;
+  width: 400px;
+}
+
+.descriptionInput {
+  height: 150px;
+  width: 400px;
+  border-radius: 30px;
+  padding: 25px;
+  border: solid grey 2px;
+  font-size: 25px;
+  font-weight: 400;
+  color: #aa51a5;
+  font-family: "Roboto";
+}
+
+.notFilled::placeholder {
+  color: red;
+}
+
+.datePickerCon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 450px;
+}
+
+.formLabel {
+  font-size: 25px;
+  color: grey;
+}
+
+.datePicker {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 30px;
+  border: solid grey 2px;
+  padding: 0px 20px;
+  color: #aa51a5;
+}
+
+.prioritybtnCon {
+  display: flex;
+  gap: 12px;
+}
+
+.priorityBtn {
+  height: 32px;
+  padding: 4px 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-radius: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  border: solid 2px black;
+  transition: 0.2s;
+}
+
+.highBtn {
+  color: rgb(204, 0, 0);
+  border: rgb(204, 0, 0) solid 2px;
+}
+
+.highBtn:hover {
+  color: white;
+  background-color: rgb(204, 0, 0);
+}
+
+.highBtnSelected {
+  color: white;
+  background-color: rgb(204, 0, 0);
+  border: solid rgb(204, 0, 0) 2px;
+}
+
+.mediumBtn {
+  color: orange;
+  border: orange solid 2px;
+}
+
+.mediumBtn:hover {
+  color: white;
+  background-color: orange;
+}
+
+.mediumBtnSelected {
+  color: white;
+  background-color: orange;
+  border: solid orange 2px;
+}
+
+.lowBtn {
+  color: green;
+  border: green solid 2px;
+}
+
+.lowBtn:hover {
+  color: white;
+  background-color: green;
+}
+
+.lowBtnSelected {
+  color: white;
+  background-color: green;
+  border: solid green 2px;
+}
+
+.createBtn {
+  margin-top: 70px;
+  background-color: #aa51a5;
+  border: none;
+  border-radius: 100px;
+  color: white;
+  height: 80px;
+  width: 200px;
+  font-size: 40px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.createBtn:active {
+  scale: 1.05;
+}
+
+.closeBtn {
+  position: absolute;
+  width: 30px;
+  height: auto;
+  top: 60px;
+  right: 80px;
+}
+.closeBtn:active {
+  scale: 1.1;
+}
+
+/* Form End */
 
 /*  Other styling that dosen't fall under that catagori */
 
@@ -213,7 +415,7 @@ body {
 
 .projectHeaderText {
   font-size: 50px;
-  font-weight: 900;
+  font-weight: 700;
   color: #aa51a5;
   grid-area: header;
 }
@@ -259,7 +461,7 @@ body {
 
 .projectTaskNumText {
   font-size: 30px;
-  font-weight: 900;
+  font-weight: 700;
   color: orange;
   margin-right: 30px;
 }
@@ -304,11 +506,12 @@ body {
 
 .taskHeaderEl {
   font-size: 45px;
-  font-weight: 900;
+  font-weight: 700;
   padding-left: 50px;
   color: #aa51a5;
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  padding-top: 30px;
   height: 115px;
   gap: 15px;
 }
@@ -339,7 +542,27 @@ body {
   height: 45px;
 }
 
+.daysLeftEl {
+  color: black;
+  font-weight: 700;
+  font-size: 30px;
+}
+
+.editAndDeleteBtnCon {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding-right: 50px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
 .rightSideLower {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 200px;
 }
 
 /* Task Element End */
